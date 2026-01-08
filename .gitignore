@@ -6,3 +6,5 @@ crosstalk/
 app_*Example/
 data/
 rsconnect/
+
+**/*.quarto_ipynb

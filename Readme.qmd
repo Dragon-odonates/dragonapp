@@ -15,10 +15,12 @@ Dataset is relatively light with each line being a unique combination of `specie
 
 
 ```{r}
+#| eval: false
 shiny::runApp("app_vect50")
 ```
 
 ```{r}
+#| eval: false
 fileapp <- c(
   "data/occ_50.rds",
   "data/points_50.gpkg",
@@ -40,6 +42,7 @@ rsconnect::deployApp(
 Dataset is heavier with 18101 different `gridID` (N=18101), and 1.878.451 rows (`.rds` file weight 7.5Mb). The definition of the grid is a geopackage file of 2.5Mb. The app can be found here: <https://rfrelat-cesab.shinyapps.io/dragon-vect10/> (10km grid, 4Mb bundle)
 
 ```{r}
+#| eval: false
 shiny::runApp(here("app_vect10"))
 
 rsconnect::deployApp(
@@ -72,6 +75,8 @@ rsconnect::deployApp(
 Recently, it was made possible to deploy shiny apps on normal webpages with the packages `webr` and `shinylive`. More information at <https://posit-dev.github.io/r-shinylive/>.
 
 ```{r}
+#| eval: false
+
 # export vect50
 shinylive::export("app_vect50", "docs", subdir = "vect50")
 # site/app.json (2.81M bytes)
@@ -110,6 +115,7 @@ Disadvantage:
 - limited in the interaction, no mathematical operation can be made in dataset so everything has to be pre-computed
 
 ```{r}
+#| eval: false
 quarto::quarto_render(
   here::here("crosstalk", "all_species_dash.qmd"),
 )
@@ -119,6 +125,7 @@ quarto::quarto_render(
 
 We could also create (automatically with quarto) one html page per species. It would be mutliple static webpages with interactive maps, but html are heavy (10Mb per species on average)
 ```{r}
+#| eval: false
 # test with one species
 quarto::quarto_render(
   here::here("crosstalk", "single_species_dash.qmd"),
