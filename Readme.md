@@ -1,17 +1,18 @@
 
-# Summary of (known) options for creating interactive dashboard in R with large spatio-temporal dataset
+# Exploration of interactive dashboards in R with large spatio-temporal dataset
 
 Large spatio-temporal datasets are a challenge for creating light dashboards with interactive maps in R.   
-Here is an exploration of different options to show the spatial distribution per species and per year.  
+Here is an exploration of different options to display the spatial distribution per species and per year.  
 
 
 ## Traditional Shiny app
-The easiest and most common way of making a dashboard in R is to create a Shiny-app.
-The main disadvantage is that it needs to be hosted on a shiny server, which is harder to integrate in a normal website. Another problem is that the (free version of) shinyapps.io server is limited.  
+The easiest way to create a dashboard in R is use Shiny. The main disadvantage is that it needs to be hosted on a shiny server, which is harder to integrate on a normal website. Another problem is that the (free version of) shinyapps.io server is limited.  
 
 
 #### 50km grid
-Dataset is relatively light with each line being a unique combination of `species` (N=120) x `year` (N=35) x `gridID` (N=1155). The dataset is made of 483.662 rows, and the file saved as `.rds` weight 1.9Mb. The definition of the grid is a geopackage file of 250kb. 
+Dataset is relatively light with each line being a unique combination of `species` (N=105) x `year` (N=35) x `gridID` (N=1151). The dataset is made of 483.662 rows, and the file saved as `.rds` weight 1.9Mb. The definition of the grid is a geopackage file of 250kb. The app can be found here: 
+<https://rfrelat-cesab.shinyapps.io/dragon-vect50/> (1Mb bundle)
+
 
 ```{r}
 shiny::runApp("app_vect50")
@@ -35,6 +36,9 @@ rsconnect::deployApp(
 ```
 
 #### 10km grid
+
+Dataset is heavier with 18101 different `gridID` (N=18101), and 1.878.451 rows (`.rds` file weight 7.5Mb). The definition of the grid is a geopackage file of 2.5Mb. The app can be found here: <https://rfrelat-cesab.shinyapps.io/dragon-vect10/> (10km grid, 4Mb bundle)
+
 ```{r}
 shiny::runApp(here("app_vect10"))
 
@@ -48,16 +52,14 @@ rsconnect::deployApp(
 ```
 
 
-The app can be found here:  
-<https://rfrelat-cesab.shinyapps.io/dragon-vect50/> (50km grid, 1Mb bundle)
-<https://rfrelat-cesab.shinyapps.io/dragon-vect10/> (10km grid, 4Mb bundle)
 
-It is relatively fast and runs well. It provides a lot of flexibility to compute other indicators on the fly (e.g. percentage of observations). 
+
 
 **Advantages:**  
 
 - easy to build and improve
 - runs quite fast with a 50km resolution, slower with 10km
+
 
 **Disadvantages:**
 
@@ -71,25 +73,32 @@ Recently, it was made possible to deploy shiny apps on normal webpages with the 
 
 ```{r}
 # export vect50
-shinylive::export("app_vect50", "_site", subdir = "vect50")
+shinylive::export("app_vect50", "docs", subdir = "vect50")
 # site/app.json (2.81M bytes)
 
 # export vect10
-shinylive::export("app_vect10", "_site", subdir = "vect10")
+shinylive::export("app_vect10", "docs", subdir = "vect10")
 # site/vect10/app.json (11.6M bytes)
 
 # then check them out:
-httpuv::runStaticServer("_site/")
+httpuv::runStaticServer("docs/")
 # then add
 # http://127.0.0.1:7446/vect10/
 # http://127.0.0.1:7446/vect50/
 ```
 
+The app with the 50km grid can be found here (3Mb)
+<https://dragon-odonates.github.io/dragonapp/vect50> 
 
 
-# Abandoned options
+The app with the 10km grid can be found here (13Mb)
+<https://dragon-odonates.github.io/dragonapp/vect10>  
 
-## Crosstalk option
+
+
+## Abandoned options
+
+### Crosstalk option
 More info: <https://rstudio.github.io/crosstalk/>
 See also: <https://plotly-r.com/client-side-linking>
 
@@ -144,41 +153,43 @@ for (i in splist) {
 ```
 
 
-## Examples and other options to be tested
-
-Cool example and technology used:
+## Examples and options to be tested
 
 #### European Breeding Bird Atlas 2
-https://ebba2.info/maps/
-extent: Europe
-spatial: 50km distribution map
-temporal: no time series 
-what: distribution map per species + community indices
-technology: javascript, maptile?
+<https://ebba2.info/maps/>  
+> extent: Europe  
+> spatial: 50km distribution map  
+> temporal: no time series  
+> what: distribution map per species + community indices
+> technology: javascript, maptile?
 
 #### Live EBP Viewer
-https://eurobirdportal.org/
-spatial : 50km for observation, 10km for breeding
-temporal: weekly from 2024 to 2025
-what: comparison of species distribution maps and seasonal trends
-technology: https://carto.com/ (paid option)
+<https://eurobirdportal.org/>  
+> extent: Europe 
+> spatial : 50km for observation, 10km for breeding
+> temporal: weekly from 2024 to 2025
+> what: comparison of species distribution maps and seasonal trends
+> technology: https://carto.com/ (paid option)
 
 #### Noisemap
-https://data.noise-planet.org/map_noisecapture/noisecapture_party.html#18/48.86530/2.34699/HBM2022
-technolog: leaflet + orbisGIS? or shiny?
-https://github.com/Universite-Gustave-Eiffel/NoiseCapture/tree/master
-https://github.com/Universite-Gustave-Eiffel/NoiseModelling
+<https://data.noise-planet.org/map_noisecapture/noisecapture_party.html#18/48.86530/2.34699/HBM2022>
+> technology: leaflet + orbisGIS? or shiny?
+<https://github.com/Universite-Gustave-Eiffel/NoiseCapture/tree/master>
+<https://github.com/Universite-Gustave-Eiffel/NoiseModelling>
 
 #### Geopal
-https://carto.geopal.org/1/carte_regionale.map
+<https://carto.geopal.org/1/carte_regionale.map>
 
 #### gridviz
-https://github.com/eurostat/gridviz
+<https://github.com/eurostat/gridviz>
 
-#### Tools:
-https://www.bluemarblegeo.com/global-mapper/
+#### Global mapper
+<https://www.bluemarblegeo.com/global-mapper/>
 
-## Exemple with forms:
+#### Google Earth Engine
+maybe the most commun way to visualize large and heavy spatial data; need to make data public
+
+## Forms and feedback gathering
 https://daattali.com/shiny/mimic-google-form/
 https://github.com/daattali/shiny-server/blob/master/mimic-google-form/app.R
 https://deanattali.com/2015/06/14/mimicking-google-form-shiny/
