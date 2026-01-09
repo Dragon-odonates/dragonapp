@@ -24,7 +24,7 @@ page_navbar(
                             tabPanel(
                                    "N Years",
                                    withSpinner(
-                                          leafletOutput('mapyrs'),
+                                          leaflet::leafletOutput('mapyrs'),
                                           type = 4
                                    )
                             ),
@@ -50,6 +50,6 @@ page_navbar(
        ),
        nav_panel(
               title = "Feedback",
-              htmlOutput("googleForm")
+              shiny::htmlOutput("googleForm")
        )
 )

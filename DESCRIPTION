@@ -1,0 +1,47 @@
+Package: dragonapp
+Title: Research compendium for dashboard on spatio-temporal distribution
+Version: 0.0.1
+Authors@R: c(
+    person(given   = "Romain",
+           family  = "Frelat",
+           role    = c("aut"),
+           email   = "rom.frelat@gmail.com",
+           comment = c(ORCID = "0000-0002-8631-4398")))
+Description: 
+URL: https://github.com/Dragon-odonates/dragonapp
+BugReports: https://github.com/Dragon-odonates/dragonapp/issues
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+LazyDataCompression: xz
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Depends: 
+    R (>= 3.5.0),
+    bslib,
+    collapse,
+    colorRamps,
+    data.table,
+    dplyr,
+    DT,
+    googledrive,
+    googlesheets4,
+    here,
+    leaflet,
+    magrittr,
+    mapview,
+    munsell,
+    plotly,
+    raster,
+    RColorBrewer,
+    rgdal,
+    sendmailR,
+    sf,
+    shiny,
+    shinyAce,
+    shinycssloaders,
+    shinyjs,
+    shinythemes,
+    sp,
+    terra,
+    tmap

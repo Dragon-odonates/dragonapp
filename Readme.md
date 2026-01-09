@@ -14,13 +14,11 @@ Dataset is relatively light with each line being a unique combination of `specie
 <https://rfrelat-cesab.shinyapps.io/dragon-vect50/> (1Mb bundle)
 
 
-```{r}
-#| eval: false
+``` r
 shiny::runApp("app_vect50")
 ```
 
-```{r}
-#| eval: false
+``` r
 fileapp <- c(
   "data/occ_50.rds",
   "data/points_50.gpkg",
@@ -41,8 +39,7 @@ rsconnect::deployApp(
 
 Dataset is heavier with 18101 different `gridID` (N=18101), and 1.878.451 rows (`.rds` file weight 7.5Mb). The definition of the grid is a geopackage file of 2.5Mb. The app can be found here: <https://rfrelat-cesab.shinyapps.io/dragon-vect10/> (10km grid, 4Mb bundle)
 
-```{r}
-#| eval: false
+``` r
 shiny::runApp(here("app_vect10"))
 
 rsconnect::deployApp(
@@ -74,9 +71,7 @@ rsconnect::deployApp(
 
 Recently, it was made possible to deploy shiny apps on normal webpages with the packages `webr` and `shinylive`. More information at <https://posit-dev.github.io/r-shinylive/>.
 
-```{r}
-#| eval: false
-
+``` r
 # export vect50
 shinylive::export("app_vect50", "docs", subdir = "vect50")
 # site/app.json (2.81M bytes)
