@@ -88,11 +88,11 @@ httpuv::runStaticServer("docs/")
 ```
 
 The app with the 50km grid can be found here (3Mb)
-<https://dragon-odonates.github.io/dragonapp/vect50> 
+<https://dragon-odonates.github.io/dragonapp/vect50/> 
 
 
 The app with the 10km grid can be found here (13Mb)
-<https://dragon-odonates.github.io/dragonapp/vect10>  
+<https://dragon-odonates.github.io/dragonapp/vect10/>  
 
 
 
@@ -109,8 +109,7 @@ Advantage:
 Disadvantage:
 - limited in the interaction, no mathematical operation can be made in dataset so everything has to be pre-computed
 
-```{r}
-#| eval: false
+``` r
 quarto::quarto_render(
   here::here("crosstalk", "all_species_dash.qmd"),
 )
@@ -119,8 +118,8 @@ quarto::quarto_render(
 ## Multiple html page, one per species
 
 We could also create (automatically with quarto) one html page per species. It would be mutliple static webpages with interactive maps, but html are heavy (10Mb per species on average)
-```{r}
-#| eval: false
+``` r
+
 # test with one species
 quarto::quarto_render(
   here::here("crosstalk", "single_species_dash.qmd"),

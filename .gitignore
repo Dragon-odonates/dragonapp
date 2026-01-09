@@ -1,7 +1,6 @@
 .quarto/
 /.quarto/
 site/
-crosstalk/
 .secrets
 app_*Example/
 data/
