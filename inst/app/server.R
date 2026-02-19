@@ -35,14 +35,17 @@ function(input, output, session) {
   ## Reactive data subset ----------
   get_pt <- reactive({
     req(input$set)
-    pt <- sf::st_read(here(folder, input$set, "poly_psi.gpkg"), quiet = TRUE)
+    pt <- sf::st_read(
+      file.path(folder, input$set, "poly_psi.gpkg"),
+      quiet = TRUE
+    )
     pt <- sf::st_cast(pt, "POLYGON", warn = FALSE)
     return(pt)
   })
 
   get_ts <- reactive({
     req(input$set)
-    df <- read.csv(here(folder, input$set, "ts_psi.csv"))
+    df <- read.csv(file.path(folder, input$set, "ts_psi.csv"))
     return(df)
   })
 

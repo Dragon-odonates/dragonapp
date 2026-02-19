@@ -107,7 +107,7 @@ get_ts_country <- function(
       all(c("median", "grid_id", "year") %in% names(dfi))
     })
 
-    for (y in sort(unique(df$year))) {
+    for (y in sort(unique(dfi$year))) {
       dfy <- dfi[dfi$year == y, c("grid_id", "median")]
       med <- dfy$median[match(row.names(area_country), dfy$grid_id)]
       outi <- data.frame(
