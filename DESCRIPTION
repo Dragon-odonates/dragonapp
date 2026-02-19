@@ -20,8 +20,6 @@ RoxygenNote: 7.3.3
 Depends: 
     R (>= 4.2.0)
 Imports: 
-    devtools,
-    here,
     rnaturalearth,
     shiny,
     stats,
