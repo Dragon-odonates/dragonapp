@@ -53,7 +53,7 @@ fluidPage(
                             column(
                                    6,
                                    card(
-                                          withSpinner(
+                                          shinycssloaders::withSpinner(
                                                  leafgl::leafglOutput(
                                                         'mapdistri',
                                                         height = "600px"

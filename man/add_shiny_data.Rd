@@ -17,6 +17,8 @@ add_shiny_data(
 \item{label}{name of the dataset}
 
 \item{country}{a \code{terra::SpatVector} object with the country definition}
+
+\item{overwrite}{whether existing data will be overwritten}
 }
 \value{
 A \code{data.frame} with the grid_id in rows and country in columns

@@ -3,6 +3,7 @@
 #' @param folder directory containing files with occupancy probabilities and grid
 #' @param label name of the dataset
 #' @param country a `terra::SpatVector` object with the country definition
+#' @param overwrite whether existing data will be overwritten
 #'
 #' @returns A `data.frame` with the grid_id in rows and country in columns
 #'
