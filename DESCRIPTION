@@ -1,0 +1,40 @@
+Package: dragonapp
+Title: Package to visually explore spatio-temporal occupancy model outputs
+Version: 0.0.1
+Authors@R: c(
+    person(given   = "Romain",
+           family  = "Frelat",
+           role    = c("aut", "cre"),
+           email   = "rom.frelat@gmail.com",
+           comment = c(ORCID = "0000-0002-8631-4398")))
+Description: This package facilitate the importation of occupancy outputs into a shiny app. 
+    The Shiny app visually explore the spatial and temporal dynamics of the species distribution model.
+URL: https://github.com/Dragon-odonates/dragonapp
+BugReports: https://github.com/Dragon-odonates/dragonapp/issues
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+LazyDataCompression: xz
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends: 
+    R (>= 4.2.0)
+Imports: 
+    devtools,
+    here,
+    rnaturalearth,
+    shiny,
+    stats,
+    terra,
+    utils
+Suggests: 
+    bslib,
+    devtools,
+    htmltools,
+    leafgl,
+    leaflet,
+    markdown,
+    plotly,
+    sf,
+    shinycssloaders,
+    testthat (>= 3.0.0)
