@@ -110,6 +110,9 @@ get_ts_country <- function(
     for (y in sort(unique(dfi$year))) {
       dfy <- dfi[dfi$year == y, c("grid_id", "median")]
       med <- dfy$median[match(row.names(area_country), dfy$grid_id)]
+      # replace NA by 0
+      med[is.na(med)] <- 0
+
       outi <- data.frame(
         "species" = sp_list[i],
         "year" = y,
