@@ -24,10 +24,8 @@ Imports:
     shiny,
     stats,
     terra,
-    utils
-Suggests: 
+    utils,
     bslib,
-    devtools,
     htmltools,
     leafgl,
     leaflet,
@@ -35,4 +33,6 @@ Suggests:
     plotly,
     sf,
     shinycssloaders,
+Suggests: 
+    devtools,
     testthat (>= 3.0.0)

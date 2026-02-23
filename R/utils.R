@@ -66,6 +66,7 @@ last_str <- function(x, split = ";") {
 #' factor palette, and a function to return labels of the form \samp{x[i] - x[i
 #' + 1]} for bin and quantile palettes (in the case of quantile palettes,
 #' `x` is the probabilities instead of the values of breaks).
+#' @param map a leaflet map
 #' @param position the position of the legend
 #' @param pal the color palette function, generated from
 #'   [colorNumeric()], `colorBin()`, `colorQuantile()`, or
@@ -95,6 +96,8 @@ last_str <- function(x, split = ";") {
 #'   group is added/removed, for example via `layerControl()`.
 #'   You will need to set the `group` when you add a layer
 #'   (e.g., [addPolygons()]) and supply the same name here.
+#' @param data data from the map
+#' @param decreasing whether the legend should be in decreasing order
 #'
 #' @export
 addLegend_decreasing <- function(
@@ -107,12 +110,12 @@ addLegend_decreasing <- function(
   colors,
   opacity = 0.5,
   labels = NULL,
-  labFormat = labelFormat(),
+  labFormat = leaflet::labelFormat(),
   title = NULL,
   className = "info legend",
   layerId = NULL,
   group = NULL,
-  data = getMapData(map),
+  data = leaflet::getMapData(map),
   decreasing = FALSE
 ) {
   position <- match.arg(position)
@@ -126,7 +129,7 @@ addLegend_decreasing <- function(
     if (missing(title) && inherits(values, "formula")) {
       title <- deparse(values[[2]])
     }
-    values <- evalFormula(values, data)
+    values <- leaflet::evalFormula(values, data)
     type <- attr(pal, "colorType", exact = TRUE)
     args <- attr(pal, "colorArgs", exact = TRUE)
     na.color <- args$na.color
@@ -225,5 +228,5 @@ addLegend_decreasing <- function(
     className = className,
     group = group
   )
-  invokeMethod(map, data, "addLegend", legend)
+  leaflet::invokeMethod(map, data, "addLegend", legend)
 }

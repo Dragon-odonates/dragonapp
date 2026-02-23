@@ -14,16 +14,18 @@ addLegend_decreasing(
   colors,
   opacity = 0.5,
   labels = NULL,
-  labFormat = labelFormat(),
+  labFormat = leaflet::labelFormat(),
   title = NULL,
   className = "info legend",
   layerId = NULL,
   group = NULL,
-  data = getMapData(map),
+  data = leaflet::getMapData(map),
   decreasing = FALSE
 )
 }
 \arguments{
+\item{map}{a leaflet map}
+
 \item{position}{the position of the legend}
 
 \item{pal}{the color palette function, generated from
@@ -65,6 +67,10 @@ with this name and will auto add/remove the legend as the
 group is added/removed, for example via \code{layerControl()}.
 You will need to set the \code{group} when you add a layer
 (e.g., \code{\link[leaflet:map-layers]{leaflet::addPolygons()}}) and supply the same name here.}
+
+\item{data}{data from the map}
+
+\item{decreasing}{whether the legend should be in decreasing order}
 }
 \description{
 When a color palette function is used in a map (e.g.,

@@ -60,4 +60,6 @@ add_shiny_data <- function(
   # Calculate the weighted mean per country
   df <- get_ts_country(grid, oc_list, sp_list)
   utils::write.csv(df, file.path(dirfile, "ts_psi.csv"), row.names = FALSE)
+
+  invisible(list("pt" = gd, "ts" = df))
 }
