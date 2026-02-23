@@ -36,10 +36,12 @@ function(input, output, session) {
   get_pt <- reactive({
     req(input$set)
     pt <- sf::st_read(
-      file.path(folder, input$set, "poly_psi.gpkg"),
+      file.path(folder, input$set, "grid_psi.gpkg"),
       quiet = TRUE
     )
     pt <- sf::st_cast(pt, "POLYGON", warn = FALSE)
+    pt_df <- readRDS(file.path(folder, input$set, "poly_psi.rds"))
+    pt <- cbind(pt, pt_df[, -1])
     return(pt)
   })
 
