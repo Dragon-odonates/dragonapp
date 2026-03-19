@@ -101,7 +101,8 @@ get_ts_country <- function(
   tsout <- list()
   for (i in seq_along(oc_list)) {
     # load data
-    dfi <- readRDS(oc_list[i])
+    # dfi <- readRDS(oc_list[i])
+    dfi <- qs2::qs_read(oc_list[i])
     # rapid check
     stopifnot("rds file must have columns `median`, `grid_id`, `year`." = {
       all(c("median", "grid_id", "year") %in% names(dfi))
