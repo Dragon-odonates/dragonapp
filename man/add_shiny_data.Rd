@@ -5,14 +5,17 @@
 \title{Calculate the average occupancy per country and per time step}
 \usage{
 add_shiny_data(
-  folder,
+  psi_files,
+  grid_file,
   label = "psi",
   country = rnaturalearth::ne_countries(continent = "europe"),
   overwrite = FALSE
 )
 }
 \arguments{
-\item{folder}{directory containing files with occupancy probabilities and grid}
+\item{psi_files}{Vector of paths to psi files (qs objects)}
+
+\item{grid_file}{Path to a grid file (gpkg object)}
 
 \item{label}{name of the dataset}
 
