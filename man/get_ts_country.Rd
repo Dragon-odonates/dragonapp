@@ -8,7 +8,10 @@ get_ts_country(
   grid,
   oc_list,
   sp_list,
-  country = rnaturalearth::ne_countries(continent = "europe"),
+  country = rnaturalearth::ne_countries(country = c("Austria", "Belgium", "Cyprus",
+    "Czechia", "Denmark", "Finland", "France", "Germany", "Ireland", "Isle of Man",
+    "Italy", "Luxembourg", "Netherlands", "Norway", "Portugal", "Slovenia", "Spain",
+    "Sweden", "Switzerland", "United Kingdom"), scale = 10),
   digits = 5
 )
 }

@@ -6,7 +6,10 @@
 \usage{
 get_area_country(
   grid,
-  country = rnaturalearth::ne_countries(continent = "europe"),
+  country = rnaturalearth::ne_countries(country = c("Austria", "Belgium", "Cyprus",
+    "Czechia", "Denmark", "Finland", "France", "Germany", "Ireland", "Isle of Man",
+    "Italy", "Luxembourg", "Netherlands", "Norway", "Portugal", "Slovenia", "Spain",
+    "Sweden", "Switzerland", "United Kingdom"), scale = 10),
   th = 0.5
 )
 }

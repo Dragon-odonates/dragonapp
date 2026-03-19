@@ -14,7 +14,12 @@ add_shiny_data <- function(
   psi_files,
   grid_file,
   label = "psi",
-  country = rnaturalearth::ne_countries(continent = "europe"),
+  country = rnaturalearth::ne_countries(country = c("Austria", "Belgium", "Cyprus", "Czechia",
+                                                    "Denmark", "Finland", "France", "Germany",
+                                                    "Ireland", "Isle of Man", "Italy", "Luxembourg", 
+                                                    "Netherlands", "Norway", "Portugal", "Slovenia", "Spain", 
+                                                    "Sweden", "Switzerland", "United Kingdom"), 
+                                        scale = 10),
   overwrite = FALSE
 ) {
   # Checking the grid ------------
@@ -54,6 +59,6 @@ add_shiny_data <- function(
     overwrite = overwrite
   )
   # Calculate the weighted mean per country
-  df <- get_ts_country(grid, psi_files, sp_list)
+  df <- get_ts_country(grid, psi_files, sp_list, country)
   utils::write.csv(df, file.path(dirfile, "ts_psi.csv"), row.names = FALSE)
 }

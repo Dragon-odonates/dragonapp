@@ -8,7 +8,10 @@ add_shiny_data(
   psi_files,
   grid_file,
   label = "psi",
-  country = rnaturalearth::ne_countries(continent = "europe"),
+  country = rnaturalearth::ne_countries(country = c("Austria", "Belgium", "Cyprus",
+    "Czechia", "Denmark", "Finland", "France", "Germany", "Ireland", "Isle of Man",
+    "Italy", "Luxembourg", "Netherlands", "Norway", "Portugal", "Slovenia", "Spain",
+    "Sweden", "Switzerland", "United Kingdom"), scale = 10),
   overwrite = FALSE
 )
 }
