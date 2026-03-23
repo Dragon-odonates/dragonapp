@@ -68,9 +68,9 @@ group is added/removed, for example via \code{layerControl()}.
 You will need to set the \code{group} when you add a layer
 (e.g., \code{\link[leaflet:map-layers]{leaflet::addPolygons()}}) and supply the same name here.}
 
-\item{data}{the map's data}
+\item{data}{data from the map}
 
-\item{decreasing}{orders for the legend colors}
+\item{decreasing}{whether the legend should be in decreasing order}
 }
 \description{
 When a color palette function is used in a map (e.g.,

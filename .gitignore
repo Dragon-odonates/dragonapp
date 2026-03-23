@@ -6,3 +6,6 @@
 .quarto/
 /.quarto/
 rsconnect/
+
+dev.R
+inst/app/data/obs_50

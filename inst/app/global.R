@@ -9,6 +9,7 @@ suppressPackageStartupMessages({
   require(htmltools)
   require(markdown)
   require(shinycssloaders)
+  require(dragonapp)
 })
 
 
@@ -22,6 +23,7 @@ folder <- "data"
 
 # load datasets
 data_choices <- list.dirs(folder, recursive = FALSE, full.names = FALSE)
+
 # df <- read.csv(here(folder, "ts_psi.csv"))
 # pt <- sf::st_read(here(folder, "poly_psi.gpkg"), quiet = TRUE)
 # pt <- sf::st_cast(pt, "POLYGON", warn = FALSE)

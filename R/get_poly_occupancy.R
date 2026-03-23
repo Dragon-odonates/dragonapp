@@ -42,6 +42,8 @@ get_poly_occupancy <- function(grid, oc_list, sp_list, digits = 5) {
     })
     # transform to wide
     wide <- tapply(df$median, list(df$grid_id, df$year), mean)
+    # replace NA by 0
+    wide[is.na(wide)] <- 0
     # get characteristics
     average <- apply(wide, 1, mean)
     slope <- apply(wide, 1, get_slope)

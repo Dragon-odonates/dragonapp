@@ -66,7 +66,7 @@ last_str <- function(x, split = ";") {
 #' factor palette, and a function to return labels of the form \samp{x[i] - x[i
 #' + 1]} for bin and quantile palettes (in the case of quantile palettes,
 #' `x` is the probabilities instead of the values of breaks).
-#'
+#' @param map a leaflet map
 #' @param position the position of the legend
 #' @param pal the color palette function, generated from
 #'   [colorNumeric()], `colorBin()`, `colorQuantile()`, or
@@ -96,9 +96,8 @@ last_str <- function(x, split = ";") {
 #'   group is added/removed, for example via `layerControl()`.
 #'   You will need to set the `group` when you add a layer
 #'   (e.g., [addPolygons()]) and supply the same name here.
-#' @param map a map object, as returned from `leaflet()` or `leafletProxy()`
-#' @param data the map's data
-#' @param decreasing orders for the legend colors
+#' @param data data from the map
+#' @param decreasing whether the legend should be in decreasing order
 #'
 #' @export
 addLegend_decreasing <- function(

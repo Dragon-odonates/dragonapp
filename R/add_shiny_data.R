@@ -54,11 +54,13 @@ add_shiny_data <- function(
   # Format occupancy per grid as spatial vector
   gd <- get_poly_occupancy(grid, psi_files, sp_list)
   terra::writeVector(
-    gd,
-    file.path(dirfile, "poly_psi.gpkg"),
+    gd[, "grid_id"],
+    file.path(dirfile, "grid_psi.gpkg"),
     overwrite = overwrite
   )
   # Calculate the weighted mean per country
   df <- get_ts_country(grid, psi_files, sp_list, country)
   utils::write.csv(df, file.path(dirfile, "ts_psi.csv"), row.names = FALSE)
+
+  invisible(list("pt" = gd, "ts" = df))
 }
