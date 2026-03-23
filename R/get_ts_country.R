@@ -9,7 +9,12 @@
 #'
 get_area_country <- function(
   grid,
-  country = rnaturalearth::ne_countries(continent = "europe"),
+  country = rnaturalearth::ne_countries(country = c("Austria", "Belgium", "Cyprus", "Czechia",
+                                                    "Denmark", "Finland", "France", "Germany",
+                                                    "Ireland", "Isle of Man", "Italy", "Luxembourg", 
+                                                    "Netherlands", "Norway", "Portugal", "Slovenia", "Spain", 
+                                                    "Sweden", "Switzerland", "United Kingdom"), 
+                                        scale = 10),
   th = 0.5
 ) {
   stopifnot("`grid` must be a `SpatVector`." = {
@@ -67,7 +72,12 @@ get_ts_country <- function(
   grid,
   oc_list,
   sp_list,
-  country = rnaturalearth::ne_countries(continent = "europe"),
+  country = rnaturalearth::ne_countries(country = c("Austria", "Belgium", "Cyprus", "Czechia",
+                                                    "Denmark", "Finland", "France", "Germany",
+                                                    "Ireland", "Isle of Man", "Italy", "Luxembourg", 
+                                                    "Netherlands", "Norway", "Portugal", "Slovenia", "Spain", 
+                                                    "Sweden", "Switzerland", "United Kingdom"), 
+                                        scale = 10),
   digits = 5
 ) {
   # Checking the inputs ------------
@@ -101,7 +111,8 @@ get_ts_country <- function(
   tsout <- list()
   for (i in seq_along(oc_list)) {
     # load data
-    dfi <- readRDS(oc_list[i])
+    # dfi <- readRDS(oc_list[i])
+    dfi <- qs2::qs_read(oc_list[i])
     # rapid check
     stopifnot("rds file must have columns `median`, `grid_id`, `year`." = {
       all(c("median", "grid_id", "year") %in% names(dfi))
@@ -118,7 +129,7 @@ get_ts_country <- function(
         "year" = y,
         "country" = names(area_country),
         "mean" = sapply(1:ncol(area_country), function(i) {
-          stats::weighted.mean(med, area_country[, i])
+          stats::weighted.mean(med, area_country[, i], na.rm = TRUE)
         })
       )
       tsout[[length(tsout) + 1]] <- outi

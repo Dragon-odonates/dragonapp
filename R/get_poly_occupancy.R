@@ -33,7 +33,8 @@ get_poly_occupancy <- function(grid, oc_list, sp_list, digits = 5) {
 
   for (i in seq_along(oc_list)) {
     # load data
-    df <- readRDS(oc_list[i])
+    # df <- readRDS(oc_list[i])
+    df <- qs2::qs_read(oc_list[i])
     # rapid check
     msg <- paste0(oc_list[i], " must have columns `median`, `grid_id`, `year`.")
     stopifnot(msg = {

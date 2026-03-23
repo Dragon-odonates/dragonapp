@@ -1,6 +1,7 @@
 #' Calculate the average occupancy per country and per time step
 #'
-#' @param folder directory containing files with occupancy probabilities and grid
+#' @param psi_files Vector of paths to psi files (qs objects)
+#' @param grid_file Path to a grid file (gpkg object)
 #' @param label name of the dataset
 #' @param country a `terra::SpatVector` object with the country definition
 #' @param overwrite whether existing data will be overwritten
@@ -10,17 +11,19 @@
 #' @export
 #'
 add_shiny_data <- function(
-  folder,
+  psi_files,
+  grid_file,
   label = "psi",
-  country = rnaturalearth::ne_countries(continent = "europe"),
+  country = rnaturalearth::ne_countries(country = c("Austria", "Belgium", "Cyprus", "Czechia",
+                                                    "Denmark", "Finland", "France", "Germany",
+                                                    "Ireland", "Isle of Man", "Italy", "Luxembourg", 
+                                                    "Netherlands", "Norway", "Portugal", "Slovenia", "Spain", 
+                                                    "Sweden", "Switzerland", "United Kingdom"), 
+                                        scale = 10),
   overwrite = FALSE
 ) {
   # Checking the grid ------------
-  # the folder must contains a grid file in gpkg
-  stopifnot("`folder` must contains a file `grid.gpkg`." = {
-    file.exists(file.path(folder, "grid.gpkg"))
-  })
-  grid <- terra::vect(file.path(folder, "grid.gpkg"))
+  grid <- terra::vect(grid_file)
   stopifnot("`grid` must contains 'polygons`." = {
     terra::is.polygons(grid)
   })
@@ -29,13 +32,11 @@ add_shiny_data <- function(
     warning("The grid was projected to EPSG:4326")
   }
   # Checking the occupancy files -------------------------
-  # occupancy files start with psi and ends with rds
-  oc_list <- list.files(folder, "^psi_.*rds$", full.names = TRUE)
   # get species name
-  sp_list <- gsub(file.path(folder, "psi_"), "", oc_list)
-  sp_list <- gsub("\\.rds", "", sp_list)
-  stopifnot("`folder` must contains `.rds` files starting with `psi_`." = {
-    length(oc_list) > 0
+  sp_list <- sapply(psi_files, function(f) gsub("psi_", "", basename(f)))
+  sp_list <- gsub("\\.qs", "", sp_list)
+  stopifnot("`psi_files` must contains `.qs` files starting with `psi_`." = {
+    length(psi_files) > 0
   })
   stopifnot("Incorrect file naming" = {
     all(sp_list != "")
@@ -51,15 +52,14 @@ add_shiny_data <- function(
     }
   }
   # Format occupancy per grid as spatial vector
-  gd <- get_poly_occupancy(grid, oc_list, sp_list)
-  saveRDS(data.frame(gd), file.path(dirfile, "poly_psi.rds"))
+  gd <- get_poly_occupancy(grid, psi_files, sp_list)
   terra::writeVector(
     gd[, "grid_id"],
     file.path(dirfile, "grid_psi.gpkg"),
     overwrite = overwrite
   )
   # Calculate the weighted mean per country
-  df <- get_ts_country(grid, oc_list, sp_list)
+  df <- get_ts_country(grid, psi_files, sp_list, country)
   utils::write.csv(df, file.path(dirfile, "ts_psi.csv"), row.names = FALSE)
 
   invisible(list("pt" = gd, "ts" = df))

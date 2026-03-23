@@ -11,7 +11,7 @@ Description: This package facilitate the importation of occupancy outputs into a
     The Shiny app visually explore the spatial and temporal dynamics of the species distribution model.
 URL: https://github.com/Dragon-odonates/dragonapp
 BugReports: https://github.com/Dragon-odonates/dragonapp/issues
-License: GPL (>= 3)
+License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: xz
@@ -20,6 +20,7 @@ RoxygenNote: 7.3.3
 Depends: 
     R (>= 4.2.0)
 Imports: 
+    qs2,
     rnaturalearth,
     shiny,
     stats,
