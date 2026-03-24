@@ -36,32 +36,44 @@ function(input, output, session) {
   get_pt <- reactive({
     req(input$set)
     pt <- sf::st_read(
-      file.path(folder, input$set, "grid_psi.gpkg"),
+      file.path(folder, input$set, "grid.gpkg"),
       quiet = TRUE
     )
     pt <- sf::st_cast(pt, "POLYGON", warn = FALSE)
-    pt_df <- readRDS(file.path(folder, input$set, "poly_psi.rds"))
+    pt_df <- readRDS(file.path(folder, input$set, "grid_df.rds"))
     pt <- cbind(pt, pt_df[, -1])
     return(pt)
   })
 
   get_ts <- reactive({
     req(input$set)
-    df <- read.csv(file.path(folder, input$set, "ts_psi.csv"))
+    df <- read.csv(file.path(folder, input$set, "ts_country.csv"))
     return(df)
   })
 
   sub_pt <- reactive({
     req(input$spe)
     pt <- get_pt()
-    spt <- pt[grepl(input$spe, names(pt))]
+    # if statement to avoid issue when changing dataset
+    if (any(grepl(input$spe, names(pt)))) {
+      spt <- pt[grepl(input$spe, names(pt))]
+    } else {
+      sp_choices <- gsub(".average", "", names(pt)[grepl("average", names(pt))])
+      # sort(unique(get_ts()$species))
+      spt <- pt[grepl(sp_choices[1], names(pt))]
+    }
     return(spt)
   })
 
   sub_ts <- reactive({
     req(input$spe)
     df <- get_ts()
-    sdf <- df[df$species == input$spe, ]
+    # if statement to avoid issue when changing dataset
+    if (input$spe %in% df$species) {
+      sdf <- df[df$species == input$spe, ]
+    } else {
+      sdf <- df[df$species == sort(df$species)[1], ]
+    }
     return(sdf)
   })
 
@@ -71,8 +83,9 @@ function(input, output, session) {
       ind <- names(pts)[-c(1, 2, ncol(pts))]
       # paste0(input$spe, ".", yr_shape)
     } else {
-      ind <- paste0(input$spe, ".", input$map)
+      ind <- names(pts)[grepl(input$map, names(pts))]
     }
+
     if (input$map == "slope") {
       max_abs <- max(abs(data.frame(pts)[, ind]), na.rm = TRUE)
       pal <- colorNumeric(
@@ -104,9 +117,10 @@ function(input, output, session) {
     pal <- colpal()
     ind <- ifelse(
       input$map == "dynamic",
-      paste0(input$spe, ".", input$year),
-      paste0(input$spe, ".", input$map)
+      names(pts)[grepl(input$year, names(pts))],
+      names(pts)[grepl(input$map, names(pts))]
     )
+
     leg <- ifelse(input$map == "dynamic", input$year, input$map)
 
     leafletProxy("mapdistri", data = pts) |>
@@ -135,11 +149,15 @@ function(input, output, session) {
   output$psits <- renderPlotly({
     req(input$year)
     dts <- sub_ts()
+    num_countries <- length(unique(dts$country))
+    pal <- colorRampPalette(RColorBrewer::brewer.pal(8, "Set2"))(num_countries)
+
     plot_ly(
       dts[dts$country != "All", ],
       x = ~year,
       y = ~mean,
       color = ~country,
+      colors = pal,
       type = "scatter",
       mode = "lines+markers"
     ) |>
@@ -161,7 +179,7 @@ function(input, output, session) {
           x0 = input$year,
           x1 = input$year,
           y0 = 0,
-          y1 = 1,
+          y1 = max(dts$mean, na.rm = TRUE),
           line = list(color = "black")
         ))
       ) |>
