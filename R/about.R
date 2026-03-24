@@ -6,12 +6,9 @@
 #'
 get_about_md <- function(dir, overwrite = TRUE) {
   # Get the direction of about.md in the package
-  dirpack <- path.package("dragonapp", quiet = FALSE)
-  dirfile <- file.path(dirpack, "app", "about.md")
+  dirfile <- file.path(find_shinyapp(), "about.md")
 
-  # Get the output directory
-  outfile <- file.path(dir, "about.md")
-  # make sure the directory exist
+  # Make sure the directory exist
   if (!file.exists(dir)) {
     dir.create(dir)
   }
@@ -34,8 +31,7 @@ update_about_md <- function(file) {
   })
 
   # Get the direction of about.md in the package
-  dirpack <- path.package("dragonapp", quiet = FALSE)
-  oldfile <- file.path(dirpack, "app", "about.md")
+  oldfile <- file.path(find_shinyapp(), "about.md")
 
   # copy about.md at the desired location
   if (!file.copy(file, oldfile, overwrite = TRUE)) {

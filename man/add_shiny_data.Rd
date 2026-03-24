@@ -5,9 +5,10 @@
 \title{Calculate the average occupancy per country and per time step}
 \usage{
 add_shiny_data(
-  psi_files,
+  sp_files,
   grid_file,
-  label = "psi",
+  sp_list = remove_common_strings(sp_files),
+  label = "test",
   country = rnaturalearth::ne_countries(country = c("Austria", "Belgium", "Cyprus",
     "Czechia", "Denmark", "Finland", "France", "Germany", "Ireland", "Isle of Man",
     "Italy", "Luxembourg", "Netherlands", "Norway", "Portugal", "Slovenia", "Spain",
@@ -16,9 +17,11 @@ add_shiny_data(
 )
 }
 \arguments{
-\item{psi_files}{Vector of paths to psi files (qs objects)}
+\item{sp_files}{Vector of paths to psi files (qs/rds/csv objects)}
 
 \item{grid_file}{Path to a grid file (gpkg object)}
+
+\item{sp_list}{Species name corresponding to each of the file in sp_files}
 
 \item{label}{name of the dataset}
 

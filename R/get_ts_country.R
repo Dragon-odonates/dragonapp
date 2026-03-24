@@ -9,12 +9,31 @@
 #'
 get_area_country <- function(
   grid,
-  country = rnaturalearth::ne_countries(country = c("Austria", "Belgium", "Cyprus", "Czechia",
-                                                    "Denmark", "Finland", "France", "Germany",
-                                                    "Ireland", "Isle of Man", "Italy", "Luxembourg", 
-                                                    "Netherlands", "Norway", "Portugal", "Slovenia", "Spain", 
-                                                    "Sweden", "Switzerland", "United Kingdom"), 
-                                        scale = 10),
+  country = rnaturalearth::ne_countries(
+    country = c(
+      "Austria",
+      "Belgium",
+      "Cyprus",
+      "Czechia",
+      "Denmark",
+      "Finland",
+      "France",
+      "Germany",
+      "Ireland",
+      "Isle of Man",
+      "Italy",
+      "Luxembourg",
+      "Netherlands",
+      "Norway",
+      "Portugal",
+      "Slovenia",
+      "Spain",
+      "Sweden",
+      "Switzerland",
+      "United Kingdom"
+    ),
+    scale = 10
+  ),
   th = 0.5
 ) {
   stopifnot("`grid` must be a `SpatVector`." = {
@@ -60,8 +79,8 @@ get_area_country <- function(
 #' Calculate the average occupancy per country and per time step
 #'
 #' @param grid a `terra::SpatVector` object with the grid
-#' @param oc_list vector of files containing the occupancy probabilities
-#' @param sp_list species name corresponding to `oc_list`
+#' @param sp_files vector of files containing the occupancy probabilities
+#' @param sp_list species name corresponding to `sp_files`
 #' @param country a `terra::SpatVector` object with the country definition
 #' @param digits integer indicating the number of decimal places to be kept.
 #' @returns A `data.frame` with the grid_id in rows and country in columns
@@ -70,14 +89,33 @@ get_area_country <- function(
 #'
 get_ts_country <- function(
   grid,
-  oc_list,
+  sp_files,
   sp_list,
-  country = rnaturalearth::ne_countries(country = c("Austria", "Belgium", "Cyprus", "Czechia",
-                                                    "Denmark", "Finland", "France", "Germany",
-                                                    "Ireland", "Isle of Man", "Italy", "Luxembourg", 
-                                                    "Netherlands", "Norway", "Portugal", "Slovenia", "Spain", 
-                                                    "Sweden", "Switzerland", "United Kingdom"), 
-                                        scale = 10),
+  country = rnaturalearth::ne_countries(
+    country = c(
+      "Austria",
+      "Belgium",
+      "Cyprus",
+      "Czechia",
+      "Denmark",
+      "Finland",
+      "France",
+      "Germany",
+      "Ireland",
+      "Isle of Man",
+      "Italy",
+      "Luxembourg",
+      "Netherlands",
+      "Norway",
+      "Portugal",
+      "Slovenia",
+      "Spain",
+      "Sweden",
+      "Switzerland",
+      "United Kingdom"
+    ),
+    scale = 10
+  ),
   digits = 5
 ) {
   # Checking the inputs ------------
@@ -94,9 +132,14 @@ get_ts_country <- function(
   stopifnot("`grid_id` must be in `grid`." = {
     "grid_id" %in% names(grid)
   })
-  stopifnot("`oc_list` and `sp_list` must have the same length." = {
-    length(oc_list) == length(sp_list)
+  stopifnot("`sp_files` and `sp_list` must have the same length." = {
+    length(sp_files) == length(sp_list)
   })
+  stopifnot(
+    "`sp_files` must contains `.qs`, `.rds` or `.csv` files." = {
+      all(tools::file_ext(sp_files) %in% c("rds", "qs", "csv"))
+    }
+  )
   if ("sf" %in% class(country)) {
     country <- terra::vect(country)
   }
@@ -109,10 +152,15 @@ get_ts_country <- function(
   area_country <- get_area_country(grid, country)
   # Make a large
   tsout <- list()
-  for (i in seq_along(oc_list)) {
+  for (i in seq_along(sp_files)) {
     # load data
-    # dfi <- readRDS(oc_list[i])
-    dfi <- qs2::qs_read(oc_list[i])
+    exti <- tools::file_ext(sp_files[i])
+    dfi <- switch(
+      exti,
+      "qs" = qs2::qs_read(sp_files[i]),
+      "rds" = readRDS(sp_files[i]),
+      "csv" = utils::read.csv(sp_files[i]),
+    )
     # rapid check
     stopifnot("rds file must have columns `median`, `grid_id`, `year`." = {
       all(c("median", "grid_id", "year") %in% names(dfi))

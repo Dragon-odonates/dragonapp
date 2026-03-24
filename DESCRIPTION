@@ -1,14 +1,19 @@
 Package: dragonapp
-Title: Package to visually explore spatio-temporal occupancy model outputs
+Title: Package to visually explore spatio-temporal species distribution
 Version: 0.0.1
 Authors@R: c(
     person(given   = "Romain",
            family  = "Frelat",
            role    = c("aut", "cre"),
            email   = "rom.frelat@gmail.com",
-           comment = c(ORCID = "0000-0002-8631-4398")))
-Description: This package facilitate the importation of occupancy outputs into a shiny app. 
-    The Shiny app visually explore the spatial and temporal dynamics of the species distribution model.
+           comment = c(ORCID = "0000-0002-8631-4398")),
+    person(given   = "Lisa",
+           family  = "Nicvert",
+           role    = c("aut"),
+           email   = "lisa.nicvert@fondationbiodiversite.fr",
+           comment = c(ORCID = "0009-0006-5763-0865")))
+Description: This package facilitates the visual exploration of observations or occupancy outputs in a shiny app. 
+    The Shiny app shows the spatial and temporal dynamics of species with interactive graphics.
 URL: https://github.com/Dragon-odonates/dragonapp
 BugReports: https://github.com/Dragon-odonates/dragonapp/issues
 License: GPL (>= 3) + file LICENSE

@@ -4,14 +4,14 @@
 \alias{get_poly_occupancy}
 \title{Attach the occupancy outputs to the grid}
 \usage{
-get_poly_occupancy(grid, oc_list, sp_list, digits = 5)
+get_poly_occupancy(grid, sp_files, sp_list, digits = 5)
 }
 \arguments{
 \item{grid}{a \code{terra::SpatVector} object with the grid}
 
-\item{oc_list}{vector of files containing the occupancy probabilities}
+\item{sp_files}{vector of files containing the occupancy probabilities}
 
-\item{sp_list}{species name corresponding to \code{oc_list}}
+\item{sp_list}{species name corresponding to \code{sp_files}}
 
 \item{digits}{integer indicating the number of decimal places to be kept.}
 }

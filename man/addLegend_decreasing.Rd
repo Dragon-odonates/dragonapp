@@ -24,7 +24,7 @@ addLegend_decreasing(
 )
 }
 \arguments{
-\item{map}{a map object, as returned from \code{leaflet()} or \code{leafletProxy()}}
+\item{map}{a leaflet map}
 
 \item{position}{the position of the legend}
 

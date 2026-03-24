@@ -6,7 +6,7 @@
 \usage{
 get_ts_country(
   grid,
-  oc_list,
+  sp_files,
   sp_list,
   country = rnaturalearth::ne_countries(country = c("Austria", "Belgium", "Cyprus",
     "Czechia", "Denmark", "Finland", "France", "Germany", "Ireland", "Isle of Man",
@@ -18,9 +18,9 @@ get_ts_country(
 \arguments{
 \item{grid}{a \code{terra::SpatVector} object with the grid}
 
-\item{oc_list}{vector of files containing the occupancy probabilities}
+\item{sp_files}{vector of files containing the occupancy probabilities}
 
-\item{sp_list}{species name corresponding to \code{oc_list}}
+\item{sp_list}{species name corresponding to \code{sp_files}}
 
 \item{country}{a \code{terra::SpatVector} object with the country definition}
 

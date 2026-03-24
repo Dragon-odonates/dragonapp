@@ -1,15 +1,15 @@
 #' Attach the occupancy outputs to the grid
 #'
 #' @param grid a `terra::SpatVector` object with the grid
-#' @param oc_list vector of files containing the occupancy probabilities
-#' @param sp_list species name corresponding to `oc_list`
+#' @param sp_files vector of files containing the occupancy probabilities
+#' @param sp_list species name corresponding to `sp_files`
 #' @param digits integer indicating the number of decimal places to be kept.
 #'
 #' @returns A `terra::SpatVector` with occupancy summarized per species
 #'
 #' @export
 #'
-get_poly_occupancy <- function(grid, oc_list, sp_list, digits = 5) {
+get_poly_occupancy <- function(grid, sp_files, sp_list, digits = 5) {
   # Checking the inputs ------------
   stopifnot("`grid` must be a `SpatVector`." = {
     "SpatVector" %in% class(grid)
@@ -20,9 +20,14 @@ get_poly_occupancy <- function(grid, oc_list, sp_list, digits = 5) {
   stopifnot("`grid_id` must be in `grid`." = {
     "grid_id" %in% names(grid)
   })
-  stopifnot("`oc_list` and `sp_list` must have the same length." = {
-    length(oc_list) == length(sp_list)
+  stopifnot("`sp_files` and `sp_list` must have the same length." = {
+    length(sp_files) == length(sp_list)
   })
+  stopifnot(
+    "`sp_files` must contains `.qs`, `.rds` or `.csv` files." = {
+      all(tools::file_ext(sp_files) %in% c("rds", "qs", "csv"))
+    }
+  )
   # transform projection if not in EPSG:4326
   if (terra::crs(grid, proj = TRUE) != "+proj=longlat +datum=WGS84 +no_defs") {
     grid <- terra::project(grid, "EPSG:4326")
@@ -31,12 +36,20 @@ get_poly_occupancy <- function(grid, oc_list, sp_list, digits = 5) {
   # output
   gdout <- data.frame("grid_id" = grid$grid_id)
 
-  for (i in seq_along(oc_list)) {
+  for (i in seq_along(sp_files)) {
     # load data
-    # df <- readRDS(oc_list[i])
-    df <- qs2::qs_read(oc_list[i])
+    exti <- tools::file_ext(sp_files[i])
+    df <- switch(
+      exti,
+      "qs" = qs2::qs_read(sp_files[i]),
+      "rds" = readRDS(sp_files[i]),
+      "csv" = utils::read.csv(sp_files[i]),
+    )
     # rapid check
-    msg <- paste0(oc_list[i], " must have columns `median`, `grid_id`, `year`.")
+    msg <- paste0(
+      sp_files[i],
+      " must have columns `median`, `grid_id`, `year`."
+    )
     stopifnot(msg = {
       all(c("median", "grid_id", "year") %in% names(df))
     })

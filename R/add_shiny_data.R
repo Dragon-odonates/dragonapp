@@ -1,7 +1,8 @@
 #' Calculate the average occupancy per country and per time step
 #'
-#' @param psi_files Vector of paths to psi files (qs objects)
+#' @param sp_files Vector of paths to psi files (qs/rds/csv objects)
 #' @param grid_file Path to a grid file (gpkg object)
+#' @param sp_list Species name corresponding to each of the file in sp_files
 #' @param label name of the dataset
 #' @param country a `terra::SpatVector` object with the country definition
 #' @param overwrite whether existing data will be overwritten
@@ -11,15 +12,35 @@
 #' @export
 #'
 add_shiny_data <- function(
-  psi_files,
+  sp_files,
   grid_file,
-  label = "psi",
-  country = rnaturalearth::ne_countries(country = c("Austria", "Belgium", "Cyprus", "Czechia",
-                                                    "Denmark", "Finland", "France", "Germany",
-                                                    "Ireland", "Isle of Man", "Italy", "Luxembourg", 
-                                                    "Netherlands", "Norway", "Portugal", "Slovenia", "Spain", 
-                                                    "Sweden", "Switzerland", "United Kingdom"), 
-                                        scale = 10),
+  sp_list = remove_common_strings(sp_files),
+  label = "test",
+  country = rnaturalearth::ne_countries(
+    country = c(
+      "Austria",
+      "Belgium",
+      "Cyprus",
+      "Czechia",
+      "Denmark",
+      "Finland",
+      "France",
+      "Germany",
+      "Ireland",
+      "Isle of Man",
+      "Italy",
+      "Luxembourg",
+      "Netherlands",
+      "Norway",
+      "Portugal",
+      "Slovenia",
+      "Spain",
+      "Sweden",
+      "Switzerland",
+      "United Kingdom"
+    ),
+    scale = 10
+  ),
   overwrite = FALSE
 ) {
   # Checking the grid ------------
@@ -33,34 +54,38 @@ add_shiny_data <- function(
   }
   # Checking the occupancy files -------------------------
   # get species name
-  sp_list <- sapply(psi_files, function(f) gsub("psi_", "", basename(f)))
-  sp_list <- gsub("\\.qs", "", sp_list)
-  stopifnot("`psi_files` must contains `.qs` files starting with `psi_`." = {
-    length(psi_files) > 0
-  })
+  stopifnot(
+    "`sp_files` must contains `.qs`, `.rds` or `.csv` files." = {
+      all(tools::file_ext(sp_files) %in% c("rds", "qs", "csv"))
+    }
+  )
   stopifnot("Incorrect file naming" = {
-    all(sp_list != "")
+    length(sp_list) == length(sp_files) & all(sp_list != "")
   })
   # Create folder to save the dataset
-  dirpack <- path.package("dragonapp", quiet = FALSE)
-  dirfile <- file.path(dirpack, "app", "data", label)
+  dirdata <- file.path(find_shinyapp(), "data")
+  dirfile <- file.path(dirdata, label)
   if (!file.exists(dirfile)) {
     dir.create(dirfile)
   } else {
     if (!overwrite) {
       stop("A dataset with the same `label` already exist.")
+    } else {
+      rm_shiny_data(label, rm.last = TRUE)
+      dir.create(dirfile)
     }
   }
   # Format occupancy per grid as spatial vector
-  gd <- get_poly_occupancy(grid, psi_files, sp_list)
+  gd <- get_poly_occupancy(grid, sp_files, sp_list)
+  saveRDS(data.frame(gd), file.path(dirfile, "grid_df.rds"))
   terra::writeVector(
     gd[, "grid_id"],
-    file.path(dirfile, "grid_psi.gpkg"),
+    file.path(dirfile, "grid.gpkg"),
     overwrite = overwrite
   )
   # Calculate the weighted mean per country
-  df <- get_ts_country(grid, psi_files, sp_list, country)
-  utils::write.csv(df, file.path(dirfile, "ts_psi.csv"), row.names = FALSE)
+  df <- get_ts_country(grid, sp_files, sp_list, country)
+  utils::write.csv(df, file.path(dirfile, "ts_country.csv"), row.names = FALSE)
 
   invisible(list("pt" = gd, "ts" = df))
 }

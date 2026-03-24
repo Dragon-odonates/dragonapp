@@ -10,10 +10,10 @@ rm_shiny_data <- function(
   rm.last = FALSE
 ) {
   # Create folder to save the dataset
-  dirpack <- path.package("dragonapp", quiet = FALSE)
-  ndataset <- list.dirs(file.path(dirpack, "app", "data"), recursive = FALSE) |>
+  dirdata <- file.path(find_shinyapp(), "data")
+  ndataset <- list.dirs(dirdata, recursive = FALSE) |>
     length()
-  dirfile <- file.path(dirpack, "app", "data", label)
+  dirfile <- file.path(dirdata, label)
   if (!file.exists(dirfile)) {
     stop("No dataset called `label` was found.")
   } else {

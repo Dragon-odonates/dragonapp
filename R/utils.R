@@ -37,6 +37,64 @@ last_str <- function(x, split = ";") {
     sapply(function(y) y[[length(y)]])
 }
 
+# Remove commun string elements -------------------------------
+#' get all substring of a string
+#'
+#' @param s a string
+#'
+get_all_substrings <- function(s) {
+  n <- nchar(s)
+  unique(unlist(lapply(1:n, function(len) {
+    substring(s, 1:(n - len + 1), len:n)
+  })))
+}
+
+#' identify the longest string
+#'
+#' @param x string vector
+#'
+longest_common_strings <- function(x) {
+  # Find common substrings across all elements
+  substrings_list <- lapply(x, get_all_substrings)
+  common <- Reduce(intersect, substrings_list)
+
+  # Remove empty string from candidates
+  common <- common[nchar(common) > 1]
+
+  # Pick the longest common substring
+  longest <- common[which.max(nchar(common))]
+
+  return(longest)
+}
+
+#' remove commun string
+#'
+#' @param x string vector
+#'
+#' @export
+remove_common_strings <- function(x) {
+  # Get the longest commun string
+  lcs <- longest_common_strings(x)
+  while (length(lcs) > 0) {
+    x <- gsub(lcs, "", x)
+    lcs <- longest_common_strings(x)
+  }
+  return(x)
+}
+
+find_shinyapp <- function() {
+  dirpack <- path.package("dragonapp", quiet = FALSE)
+  dirapp <- list.dirs(dirpack)[grep("/app$", list.dirs(dirpack))]
+  # check if not multiple
+  if (length(dirapp) > 1) {
+    dirapp <- dirapp[1]
+    warning(paste(
+      "Multiple Shiny app were found. The first one was exported: ",
+      dirapp
+    ))
+  }
+  return(dirapp)
+}
 
 # add decreasing legend in Leaflet ------------
 #' Customized leaflet::addLegend() function to add a color legend to a map
